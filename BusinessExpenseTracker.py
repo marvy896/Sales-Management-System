@@ -17,10 +17,30 @@ expense1 = {
 expenses.append(expense)
 expenses.append(expense1)
 
-total = 0
-for expense in expenses:
-    total += expense["amount"]
 
-print(f"Welcome to the Business Expense Tracker! \n"
-      f"See your expenses below: {expenses}")
-print(f"Total expenses: ${total}")
+
+# Now we will create a function to add expenses,instead of hardcoding the expenses, we will ask the user to input the expenses.
+def add_expense():
+    description = input("Enter the description of the expense: ")
+    amount = float(input("Enter the amount spent: "))
+    category = input("Enter the category of the expense: ")
+    expense = {
+        "description": description,
+        "amount": amount,
+        "category": category
+    }
+    expenses.append(expense)
+    print("Expense added successfully!")
+    print(f"Updated expenses: {expenses}")
+add_expense()
+# now lets create a function to add all the expenses and get the total amount spent.
+def getTotal():
+    total = 0
+    for expense in expenses:
+        total += expense["amount"]
+        print(f"Total expenses: ${total}")
+
+# Now lets create a function to view all the expenses, we will print the description, amount and category of each expense.
+def view_expenses():
+    for expense in expenses:
+        print(f"Description: {expense['description']}, Amount: ${expense['amount']}, Category: {expense['category']}")
