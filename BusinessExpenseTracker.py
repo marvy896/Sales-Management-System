@@ -43,29 +43,7 @@ def getTotal():
 def view_expenses():
     for expense in expenses:
         print(f"Description: {expense['description']}, Amount: ${expense['amount']}, Category: {expense['category']}")
-
-while True:
-    print("Welcome to the Business Expense Tracker!")
-    print("Please select an option:")
-    print("1. Add an expense")
-    print("2. View all expenses")
-    print("3. Get total expenses")
-    print("4. Exit")
-
-    choice = input("Enter your choice (1-4): ")
-
-    if choice == "1":
-        add_expense()
-    elif choice == "2":
-        view_expenses()
-    elif choice == "3":
-        getTotal()
-    elif choice == "4":
-        print("Thank you for using the Business Expense Tracker!")
-        break
-    else:
-        print("Invalid choice. Please try again.")
-
+        
 # lets add the delete expense function, we will ask the user to input the description of the expense they want to delete and we will remove it from the expenses list.
 def delete_expense():
     description = input("Enter the description of the expense you want to delete: ")
@@ -76,3 +54,29 @@ def delete_expense():
             print(f"Updated expenses: {expenses}")
             return
     print("Expense not found.")
+
+while True:
+    print("Welcome to the Business Expense Tracker!")
+    print("Please select an option:")
+    print("1. Add an expense")
+    print("2. View all expenses")
+    print("3. Get total expenses")
+    print("4. Delete an expense")
+    print("5. Exit")
+
+    choice = input("Enter your choice (1-5): ")
+
+    if choice == "1":
+        add_expense()
+    elif choice == "2":
+        view_expenses()
+    elif choice == "3":
+        getTotal()
+    elif choice == "4":
+        delete_expense()
+    elif choice == "5":
+        print("Thank you for using the Business Expense Tracker!")
+        break
+    else:
+        print("Invalid choice. Please try again.")
+
