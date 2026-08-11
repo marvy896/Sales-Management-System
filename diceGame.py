@@ -15,7 +15,7 @@ def PlayGame():
                     result = roll_dice()
                     print(f"You rolled a {result}!")
                     if result == 6:
-                        print("Congratulations! You rolled a 6! \n Press Enter to roll the dice..")
+                        print("Congratulations! You rolled a 6! \n Do you want to play again? (y/n)")
                         break
                     else:
                         print("Try again!")
