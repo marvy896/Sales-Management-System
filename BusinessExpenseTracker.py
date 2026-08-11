@@ -2,6 +2,7 @@
 # first we need to create a dictionary of expenses, will contain the amount spent, what is what spent for and the
 # category. 
 # Additionally, we will create a function to add expenses, view expenses, and delete expenses.
+# so basically, create a dictionary of expenses, appended it to a list and then create functions to add, view and delete expenses.
 
 expenses = []
 # expense = {
@@ -64,3 +65,14 @@ while True:
         break
     else:
         print("Invalid choice. Please try again.")
+
+# lets add the delete expense function, we will ask the user to input the description of the expense they want to delete and we will remove it from the expenses list.
+def delete_expense():
+    description = input("Enter the description of the expense you want to delete: ")
+    for expense in expenses:
+        if expense["description"] == description:
+            expenses.remove(expense)
+            print("Expense deleted successfully!")
+            print(f"Updated expenses: {expenses}")
+            return
+    print("Expense not found.")
