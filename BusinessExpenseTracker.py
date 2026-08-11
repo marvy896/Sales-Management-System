@@ -4,20 +4,18 @@
 # Additionally, we will create a function to add expenses, view expenses, and delete expenses.
 
 expenses = []
-expense = {
-    "description": "transportation",
-    "amount": 50,
-    "category": "travel"
-}
-expense1 = {
-    "description": "food",
-    "amount": 30,
-    "category": "meal"
-}
-expenses.append(expense)
-expenses.append(expense1)
-
-
+# expense = {
+#     "description": "transportation",
+#     "amount": 50,
+#     "category": "travel"
+# }
+# expense1 = {
+#     "description": "food",
+#     "amount": 30,
+#     "category": "meal"
+# }
+# expenses.append(expense)
+# expenses.append(expense1)
 
 # Now we will create a function to add expenses,instead of hardcoding the expenses, we will ask the user to input the expenses.
 def add_expense():
@@ -32,7 +30,7 @@ def add_expense():
     expenses.append(expense)
     print("Expense added successfully!")
     print(f"Updated expenses: {expenses}")
-add_expense()
+
 # now lets create a function to add all the expenses and get the total amount spent.
 def getTotal():
     total = 0
@@ -44,3 +42,25 @@ def getTotal():
 def view_expenses():
     for expense in expenses:
         print(f"Description: {expense['description']}, Amount: ${expense['amount']}, Category: {expense['category']}")
+
+while True:
+    print("Welcome to the Business Expense Tracker!")
+    print("Please select an option:")
+    print("1. Add an expense")
+    print("2. View all expenses")
+    print("3. Get total expenses")
+    print("4. Exit")
+
+    choice = input("Enter your choice (1-4): ")
+
+    if choice == "1":
+        add_expense()
+    elif choice == "2":
+        view_expenses()
+    elif choice == "3":
+        getTotal()
+    elif choice == "4":
+        print("Thank you for using the Business Expense Tracker!")
+        break
+    else:
+        print("Invalid choice. Please try again.")
