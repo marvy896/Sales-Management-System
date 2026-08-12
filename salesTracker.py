@@ -4,13 +4,17 @@ sales = []
 next_id = 1
 # the sales will be collected in a dictionary with the following keys: 'item', 'quantity', 'price'
 # lets add an id to each sales, itll be a unique id for each sale.
+# lets add date and time to each sale, so we can track when the sale was made.
+
+from datetime import datetime
 
 sales_data = {
     'sale_id': '',
     'item': '',
     'quantity': 0,
     'price': 0.0,
-    'Total': 0.0
+    'Total': 0.0,
+    'date_time': ''
 }
 def add_sale():
     global next_id
@@ -22,13 +26,14 @@ def add_sale():
     sales_data['quantity'] = quantity
     sales_data['price'] = price
     sales_data['Total'] = quantity * price
+    sales_data['date_time'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     sales.append(sales_data.copy())
     next_id += 1
     print("Sale added successfully!")
 
 def view_sales():
     for sale in sales:
-        print(f"Sale ID: {sale['sale_id']}, Item Sold: {sale['item']}, Quantity Sold: {sale['quantity']}, Price: ${sale['price']}, Total Sale Amount: ${sale['Total']}")
+        print(f"Sale ID: {sale['sale_id']}, Item Sold: {sale['item']}, Quantity Sold: {sale['quantity']}, Price: ${sale['price']}, Total Sale Amount: ${sale['Total']}, Date and Time: {sale['date_time']}")
         # To display the total sale amount, we can multiply the quantity sold by the price of the item and display it.
         # print(f"Total Sale Amount: ${sale['quantity'] * sale['price']}")
 
