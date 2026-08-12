@@ -1,45 +1,51 @@
 # This will be able to record each sales, add new sales, remove sales, view sales, and display the total sales amount.
 
 sales = []
-
+next_id = 1
 # the sales will be collected in a dictionary with the following keys: 'item', 'quantity', 'price'
+# lets add an id to each sales, itll be a unique id for each sale.
+
 sales_data = {
+    'sale_id': '',
     'item': '',
     'quantity': 0,
     'price': 0.0,
-    'Total Sale Amount': 0.0
+    'Total': 0.0
 }
 def add_sale():
+    global next_id
     item = input("Enter the item sold: ")
     quantity = int(input("Enter the quantity sold: "))
     price = float(input("Enter the price of the item: "))
+    sales_data['sale_id'] = str(next_id)
     sales_data['item'] = item
     sales_data['quantity'] = quantity
     sales_data['price'] = price
-    sales_data['Total Sale Amount'] = quantity * price
+    sales_data['Total'] = quantity * price
     sales.append(sales_data.copy())
+    next_id += 1
     print("Sale added successfully!")
 
 def view_sales():
     for sale in sales:
-        print(f"Item Sold: {sale['item']}, Quantity Sold: {sale['quantity']}, Price: ${sale['price']}, Total Sale Amount: ${sale['Total Sale Amount']}")
+        print(f"Sale ID: {sale['sale_id']}, Item Sold: {sale['item']}, Quantity Sold: {sale['quantity']}, Price: ${sale['price']}, Total Sale Amount: ${sale['Total']}")
         # To display the total sale amount, we can multiply the quantity sold by the price of the item and display it.
         # print(f"Total Sale Amount: ${sale['quantity'] * sale['price']}")
 
 def get_total_sales():
     total_sales = 0
     for sale in sales:
-        total_sales += sale['Total Sale Amount']
+        total_sales += sale['Total']
     print(f"Total Sales Amount: ${total_sales}")
 
 def remove_sale():
-    item = input("Enter the item sold you want to remove: ")
+    sales_id = input("Enter the ID of the sale you want to remove: ")
     for sale in sales:
-        if sale['item'] == item:
+        if sale['sale_id'] == sales_id:
             sales.remove(sale)
             print("Sale removed successfully!")
             return
-        print("Sale not found.")
+    print("Sale not found.")
 
 def main():
     while True:
