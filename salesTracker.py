@@ -6,7 +6,8 @@ sales = []
 sales_data = {
     'item': '',
     'quantity': 0,
-    'price': 0.0
+    'price': 0.0,
+    'Total Sale Amount': 0.0
 }
 def add_sale():
     item = input("Enter the item sold: ")
@@ -15,19 +16,20 @@ def add_sale():
     sales_data['item'] = item
     sales_data['quantity'] = quantity
     sales_data['price'] = price
+    sales_data['Total Sale Amount'] = quantity * price
     sales.append(sales_data.copy())
     print("Sale added successfully!")
 
 def view_sales():
     for sale in sales:
-        print(f"Item Sold: {sale['item']}, Quantity Sold: {sale['quantity']}, Price: ${sale['price']}")
+        print(f"Item Sold: {sale['item']}, Quantity Sold: {sale['quantity']}, Price: ${sale['price']}, Total Sale Amount: ${sale['Total Sale Amount']}")
         # To display the total sale amount, we can multiply the quantity sold by the price of the item and display it.
         # print(f"Total Sale Amount: ${sale['quantity'] * sale['price']}")
 
 def get_total_sales():
     total_sales = 0
     for sale in sales:
-        total_sales += sale['quantity'] * sale['price']
+        total_sales += sale['Total Sale Amount']
     print(f"Total Sales Amount: ${total_sales}")
 
 def remove_sale():
