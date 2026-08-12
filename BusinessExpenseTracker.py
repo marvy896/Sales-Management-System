@@ -43,7 +43,7 @@ def getTotal():
 def view_expenses():
     for expense in expenses:
         print(f"Description: {expense['description']}, Amount: ${expense['amount']}, Category: {expense['category']}")
-        
+
 # lets add the delete expense function, we will ask the user to input the description of the expense they want to delete and we will remove it from the expenses list.
 def delete_expense():
     description = input("Enter the description of the expense you want to delete: ")
