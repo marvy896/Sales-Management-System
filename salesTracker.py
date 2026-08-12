@@ -38,8 +38,8 @@ def remove_sale():
         if sale['item'] == item:
             sales.remove(sale)
             print("Sale removed successfully!")
-        else:
-            print("Sale not found.")
+            return
+        print("Sale not found.")
 
 def main():
     while True:
