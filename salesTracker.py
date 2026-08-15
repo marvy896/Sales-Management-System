@@ -32,8 +32,11 @@ def add_sale():
     print("Sale added successfully!")
 
 def view_sales():
-    for sale in sales:
-        print(f"Sale ID: {sale['sale_id']}, Item Sold: {sale['item']}, Quantity Sold: {sale['quantity']}, Price: ${sale['price']}, Total Sale Amount: ${sale['Total']}, Date and Time: {sale['date_time']}")
+      if not sales:
+        print("No sales recorded yet.")
+        return
+for sale in sales:
+    print(f"Sale ID: {sale['sale_id']}, Item Sold: {sale['item']}, Quantity Sold: {sale['quantity']}, Price: ${sale['price']}, Total Sale Amount: ${sale['Total']}, Date and Time: {sale['date_time']}")
         # To display the total sale amount, we can multiply the quantity sold by the price of the item and display it.
         # print(f"Total Sale Amount: ${sale['quantity'] * sale['price']}")
 
