@@ -18,7 +18,13 @@ sales_data = {
 }
 def add_sale():
     global next_id
-    item = input("Enter the item sold: ")
+    while True:
+        item = input("Enter the item sold: ").strip()
+        if not item:
+            print("Item name cannot be empty. Please enter a valid item name.")
+            continue
+        break
+
     while True:
         try:
             quantity = int(input("Enter the quantity sold: "))
@@ -32,8 +38,8 @@ def add_sale():
     while True:
         try:
             price = float(input("Enter the price of the item: "))
-            if price < 0:
-                print("Price cannot be negative. Please enter a valid number.")
+            if price <= 0:
+                print("Price cannot be zero or negative. Please enter a valid number.")
                 continue
             break
         except ValueError:
