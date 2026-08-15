@@ -19,8 +19,26 @@ sales_data = {
 def add_sale():
     global next_id
     item = input("Enter the item sold: ")
-    quantity = int(input("Enter the quantity sold: "))
-    price = float(input("Enter the price of the item: "))
+    while True:
+        try:
+            quantity = int(input("Enter the quantity sold: "))
+            if quantity <= 0:
+                print("Quantity cannot be zero or negative. Please enter a valid number.")
+                continue
+            break
+        except ValueError:
+            print("Invalid input for quantity. Please enter a valid number.")
+            return
+    while True:
+        try:
+            price = float(input("Enter the price of the item: "))
+            if price < 0:
+                print("Price cannot be negative. Please enter a valid number.")
+                continue
+            break
+        except ValueError:
+            print("Invalid input for price. Please enter a valid number.")
+            return
     sales_data['sale_id'] = str(next_id)
     sales_data['item'] = item
     sales_data['quantity'] = quantity
