@@ -40,7 +40,7 @@ def add_sale():
             break
         except ValueError:
             print("Invalid input for quantity. Please enter a valid number.")
-            return
+            continue
     while True:
         try:
             price = float(input("Enter the price of the item: "))
@@ -50,7 +50,7 @@ def add_sale():
             break
         except ValueError:
             print("Invalid input for price. Please enter a valid number.")
-            return
+            continue
     sales_data['sale_id'] = str(next_id)
     sales_data['customer'] = customer
     sales_data['item'] = item
@@ -62,14 +62,19 @@ def add_sale():
     next_id += 1
     print("Sale added successfully!")
 
+
+def display_sale(sale):
+    print(f"Sale ID: {sale['sale_id']}, Customer's Name: {sale['customer']}, Item Sold: {sale['item']}, Quantity Sold: {sale['quantity']}, Price: ₦{float(sale['price']):.2f}, Total Sale Amount: ₦{float(sale['Total']):.2f}, Date and Time: {sale['date_time']}")
+
 def view_sales():
     if not sales:
         print("No sales recorded yet.")
         return
     for sale in sales:
-        print(f"Sale ID: {sale['sale_id']}, Customer's Name: {sale['customer']}, Item Sold: {sale['item']}, Quantity Sold: {sale['quantity']}, Price: ${sale['price']}, Total Sale Amount: ${sale['Total']}, Date and Time: {sale['date_time']}")
-        # To display the total sale amount, we can multiply the quantity sold by the price of the item and display it.
-        # print(f"Total Sale Amount: ${sale['quantity'] * sale['price']}")
+        display_sale(sale)
+        # print(f"Sale ID: {sale['sale_id']}, Customer's Name: {sale['customer']}, Item Sold: {sale['item']}, Quantity Sold: {sale['quantity']}, Price: ₦{sale['price']}, Total Sale Amount: ₦{sale['Total']}, Date and Time: {sale['date_time']}")
+        # # To display the total sale amount, we can multiply the quantity sold by the price of the item and display it.
+        # # print(f"Total Sale Amount: ${sale['quantity'] * sale['price']}")
 
 def get_total_sales():
     total_sales = 0
@@ -85,7 +90,18 @@ def remove_sale():
             print("Sale removed successfully!")
             return
     print("Sale not found.")
-
+def search_sale():
+    if not sales:
+        print("No sales recorded yet.")
+        return
+    customer_name = input("Enter the customer's name to search for sales: ").strip().lower()
+    found = False
+    for sale in sales:
+        if sale['customer'].lower() == customer_name:
+            display_sale(sale)
+            found = True
+    if not found:
+        print("Sale not found.")
 def main():
     while True:
         print("Welcome to the Sales Tracker!")
@@ -94,7 +110,8 @@ def main():
         print("2. View Sales")
         print("3. Get Total Sales")
         print("4. Remove Sale")
-        print("5. Exit")
+        print("5. Search Sale")
+        print("6. Exit")
         choice = input()
         if choice == '1':
             add_sale()
@@ -105,8 +122,10 @@ def main():
         elif choice == '4':
             remove_sale()
         elif choice == '5':
+            search_sale()
+        elif choice == '6':
             break
         else:
-            print("Invalid input. Please enter a number between 1 and 5.")
+            print("Invalid input. Please enter a number between 1 and 6.")
 
 main()
