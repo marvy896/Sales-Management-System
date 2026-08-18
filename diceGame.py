@@ -7,7 +7,7 @@ print(f"Hello, {Name}! Welcome to my Dice Game!")
 def PlayGame():
     print("Do you want to play? (y/n)")
     while True:
-        choice = input().lower()
+        choice = input().lower().strip()
         if choice == "y":
             print("Great! Let's start the game.")
             while True:
