@@ -55,7 +55,9 @@ def delete_expense():
             return
     print("Expense not found.")
 
+
 while True:
+    
     print("Welcome to the Business Expense Tracker!")
     print("Please select an option:")
     print("1. Add an expense")
