@@ -64,7 +64,7 @@ def add_sale():
 
 
 def display_sale(sale):
-    print(f"Sale ID: {sale['sale_id']}, Customer's Name: {sale['customer']}, Item Sold: {sale['item']}, Quantity Sold: {sale['quantity']}, Price: ₦{float(sale['price']):.2f}, Total Sale Amount: ₦{float(sale['Total']):.2f}, Date and Time: {sale['date_time']}")
+    print(f"Sale ID: {sale['sale_id']}, Customer's Name: {sale['customer']}, Item Sold: {sale['item']}, Quantity Sold: {sale['quantity']}, Price: ₦{sale['price']:,.2f}, Total Sale Amount: ₦{sale['Total']:,.2f}, Date and Time: {sale['date_time']}")
 
 def view_sales():
     if not sales:
@@ -80,7 +80,7 @@ def get_total_sales():
     total_sales = 0
     for sale in sales:
         total_sales += sale['Total']
-    print(f"Total Sales Amount: ${total_sales}")
+    print(f"Total Sales Amount: ₦{total_sales:,.2f}")
 
 def remove_sale():
     sales_id = input("Enter the ID of the sale you want to remove: ")
