@@ -17,7 +17,7 @@ def add_sale():
     'item': '',
     'quantity': 0,
     'price': 0.0,
-    'Total': 0.0,
+    'total': 0.0,
     'date_time': ''
 }
     while True:
@@ -56,7 +56,7 @@ def add_sale():
     sales_data['item'] = item
     sales_data['quantity'] = quantity
     sales_data['price'] = price
-    sales_data['Total'] = quantity * price
+    sales_data['total'] = quantity * price
     sales_data['date_time'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     sales.append(sales_data)
     next_id += 1
@@ -64,7 +64,7 @@ def add_sale():
 
 
 def display_sale(sale):
-    print(f"Sale ID: {sale['sale_id']}, Customer's Name: {sale['customer']}, Item Sold: {sale['item']}, Quantity Sold: {sale['quantity']}, Price: ₦{sale['price']:,.2f}, Total Sale Amount: ₦{sale['Total']:,.2f}, Date and Time: {sale['date_time']}")
+    print(f"Sale ID: {sale['sale_id']}, Customer's Name: {sale['customer']}, Item Sold: {sale['item']}, Quantity Sold: {sale['quantity']}, Price: ₦{sale['price']:,.2f}, Total Sale Amount: ₦{sale['total']:,.2f}, Date and Time: {sale['date_time']}")
 
 def view_sales():
     if not sales:
@@ -72,14 +72,14 @@ def view_sales():
         return
     for sale in sales:
         display_sale(sale)
-        # print(f"Sale ID: {sale['sale_id']}, Customer's Name: {sale['customer']}, Item Sold: {sale['item']}, Quantity Sold: {sale['quantity']}, Price: ₦{sale['price']}, Total Sale Amount: ₦{sale['Total']}, Date and Time: {sale['date_time']}")
+        # print(f"Sale ID: {sale['sale_id']}, Customer's Name: {sale['customer']}, Item Sold: {sale['item']}, Quantity Sold: {sale['quantity']}, Price: ₦{sale['price']}, Total Sale Amount: ₦{sale['total']}, Date and Time: {sale['date_time']}")
         # # To display the total sale amount, we can multiply the quantity sold by the price of the item and display it.
         # # print(f"Total Sale Amount: ${sale['quantity'] * sale['price']}")
 
 def get_total_sales():
     total_sales = 0
     for sale in sales:
-        total_sales += sale['Total']
+        total_sales += sale['total']
     print(f"Total Sales Amount: ₦{total_sales:,.2f}")
 
 def remove_sale():
@@ -102,9 +102,34 @@ def search_sale():
             found = True
     if not found:
         print("Sale not found.")
+        
+def sales_report():
+    if not sales:
+        print("No sales recorded yet.")
+        return
+    total_transactions = len(sales)
+    total_items = 0
+    for sale in sales:
+        total_items += sale['quantity']
+                
+    total_items_sold = total_items
+    total_revenue = 0
+    for sale in sales:
+        total_revenue += sale['total']
+    average_sale_amount = total_revenue / total_transactions if total_transactions > 0 else 0
+    print("=" * 40)
+    print("SALES MANAGEMENT SYSTEM".center(40))
+    print(f'Total Transactions: {total_transactions}')
+    print(f'Total Items Sold: {total_items_sold}')
+    print(f'Total Revenue: ₦{total_revenue:,.2f}')
+    print(f'Average Sale Amount: ₦{average_sale_amount:,.2f}')
+    print("=" * 40)
+
+
 def main():
+    
     while True:
-        print("Welcome to the Sales Tracker!")
+        sales_report()
         print("Please select an option:")
         print("1. Add Sale")
         print("2. View Sales")
