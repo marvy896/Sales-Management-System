@@ -8,17 +8,23 @@ next_id = 1
 
 from datetime import datetime
 
-sales_data = {
+
+def add_sale():
+    global next_id
+    sales_data = {
     'sale_id': '',
+    'customer': '',
     'item': '',
     'quantity': 0,
     'price': 0.0,
     'Total': 0.0,
     'date_time': ''
 }
-def add_sale():
-    global next_id
     while True:
+        customer = input("Enter your Name: ").strip()
+        if not customer:
+            print("Please Enter your name")
+            continue
         item = input("Enter the item sold: ").strip()
         if not item:
             print("Item name cannot be empty. Please enter a valid item name.")
@@ -46,21 +52,22 @@ def add_sale():
             print("Invalid input for price. Please enter a valid number.")
             return
     sales_data['sale_id'] = str(next_id)
+    sales_data['customer'] = customer
     sales_data['item'] = item
     sales_data['quantity'] = quantity
     sales_data['price'] = price
     sales_data['Total'] = quantity * price
     sales_data['date_time'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    sales.append(sales_data.copy())
+    sales.append(sales_data)
     next_id += 1
     print("Sale added successfully!")
 
 def view_sales():
-      if not sales:
+    if not sales:
         print("No sales recorded yet.")
         return
-for sale in sales:
-    print(f"Sale ID: {sale['sale_id']}, Item Sold: {sale['item']}, Quantity Sold: {sale['quantity']}, Price: ${sale['price']}, Total Sale Amount: ${sale['Total']}, Date and Time: {sale['date_time']}")
+    for sale in sales:
+        print(f"Sale ID: {sale['sale_id']}, Customer's Name: {sale['customer']}, Item Sold: {sale['item']}, Quantity Sold: {sale['quantity']}, Price: ${sale['price']}, Total Sale Amount: ${sale['Total']}, Date and Time: {sale['date_time']}")
         # To display the total sale amount, we can multiply the quantity sold by the price of the item and display it.
         # print(f"Total Sale Amount: ${sale['quantity'] * sale['price']}")
 
