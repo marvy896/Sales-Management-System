@@ -31,7 +31,7 @@ def load_sales():
 def get_valid_quantity():
     while True:
             try:
-                quantity = int(input("Enter the quantity sold: "))
+                quantity = int(input("Enter the quantity sold: ")).strip()
                 if quantity <= 0:
                     print("Quantity cannot be zero or negative. Please enter a valid number.")
                     continue
@@ -44,7 +44,7 @@ def get_valid_quantity():
 def get_valid_price():
     while True:
             try:
-                price = float(input("Enter the price of the item: "))
+                price = float(input("Enter the price of the item: ")).strip()
                 if price <= 0:
                     print("Price cannot be zero or negative. Please enter a valid number.")
                     continue
@@ -146,6 +146,77 @@ def sales_report():
     print(f'Average Sale Amount: ₦{average_sale_amount:,.2f}')
     print("=" * 40)
 
+# lets Add a function to edit a sale
+# so first we get the Id of the sale we want to edit, 
+# then we search for the sale in the sales list, 
+# if we find it, we display the current details of the sale and 
+# ask the user to enter the new details for the sale, 
+# then we update the sale with the new details and save the sales data to the JSON file. 
+# If we don't find the sale, we print a message saying that the sale was not found.
+def get_optional_quantity(prompt):
+    while True:
+        quantity = input(prompt).strip()
+        if quantity == "":
+            return None
+        try:
+            quantity = int(quantity)
+            if quantity <= 0:
+                print("Quantity cannot be zero or negative. Please enter a valid number.")
+                continue
+            return quantity
+        except ValueError:
+            print("Invalid input for quantity. Please enter a valid number.")
+            continue
+        
+def get_optional_price(prompt):
+    while True:
+        price = input(prompt).strip()
+        if price == "":
+            return None
+        try:
+            price = float(price)
+            if price <= 0:
+                print("Price cannot be zero or negative. Please enter a valid number.")
+                continue
+            return price
+        except ValueError:
+            print("Invalid input for price. Please enter a valid number.")
+            continue
+        
+def get_optional_text(prompt):
+    while True:
+        text = input(prompt).strip()
+        if text == "":
+            return None
+        return text
+    
+def edit_sale():
+    sale_id = input("Enter the ID of the sale you want to edit: ")
+    for sale in sales:
+        if sale['sale_id'] == sale_id:
+            print("Current sale details:")
+            display_sale(sale)
+    
+            print("\nEnter the new details for the sale:")
+            new_customer = get_optional_text("Enter the new customer's name (leave blank to keep current): ")
+            new_item = get_optional_text("Enter the new item sold (leave blank to keep current): ")
+            new_quantity = get_optional_quantity("Enter the new quantity sold (leave blank to keep current): ")
+            new_price = get_optional_price("Enter the new price (leave blank to keep current): ")
+            if new_customer is not None:
+                sale['customer'] = new_customer
+            if new_item is not None:
+                sale['item'] = new_item
+            if new_quantity is not None:
+                sale['quantity'] = new_quantity
+            if new_price is not None:
+                sale['price'] = new_price
+                
+            sale['total'] = sale['quantity'] * sale['price']
+
+            save_sales()  # Save the sales data to the JSON file after editing a sale
+            print("Sale edited successfully!")
+            return
+    print("Sale not found.")
 
 def main():
     
@@ -156,10 +227,11 @@ def main():
         print("3. Get Total Sales")
         print("4. Remove Sale")
         print("5. Search Sale")
-        print("6. Sale Report")
-        print("7. Exit")
+        print("6. Edit Sale")
+        print("7. Sales Report")
+        print("8. Exit")
         
-        choice = input("Enter your choice (1-7): ").strip()
+        choice = input("Enter your choice (1-8): ").strip()
         
         if choice == '1':
             add_sale()
@@ -172,11 +244,13 @@ def main():
         elif choice == '5':
             search_sale()
         elif choice == '6':
-            sales_report()
+            edit_sale()
         elif choice == '7':
+            sales_report()
+        elif choice == '8':
             break
         else:
-            print("Invalid input. Please enter a number between 1 and 7.")
+            print("Invalid input. Please enter a number between 1 and 8.")
 
 load_sales()
 main()

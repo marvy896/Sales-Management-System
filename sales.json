@@ -1,8 +1,8 @@
 [
     {
         "sale_id": "1",
-        "customer": "re",
-        "item": "er",
+        "customer": "Reymond",
+        "item": "Erected",
         "quantity": 6,
         "price": 5.0,
         "total": 30.0,
@@ -30,9 +30,9 @@
         "sale_id": "5",
         "customer": "RT",
         "item": "GUG",
-        "quantity": 5,
-        "price": 7.0,
-        "total": 35.0,
+        "quantity": 7,
+        "price": 8.0,
+        "total": 56.0,
         "date_time": "2026-08-19 14:47:17"
     }
 ]
