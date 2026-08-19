@@ -7,8 +7,26 @@ next_id = 1
 # lets add date and time to each sale, so we can track when the sale was made.
 
 from datetime import datetime
+# Now lets advance into using Json to save file instead of using a list, so we can easily read and write data to the file.
+import json
 
+# lets teach python to save sales to a JSON file
+def save_sales():
+    with open("sales.json", "w") as file:
+        json.dump(sales, file, indent=4)
 
+def load_sales():
+    global sales
+    global next_id
+  
+    try:
+        with open("sales.json", "r") as file:
+            sales = json.load(file)
+    except FileNotFoundError:
+        sales = []
+    if sales:
+        next_id = max(int(sale['sale_id']) for sale in sales) + 1
+        
 def add_sale():
     global next_id
     sales_data = {
@@ -60,6 +78,7 @@ def add_sale():
     sales_data['date_time'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     sales.append(sales_data)
     next_id += 1
+    save_sales()  # Save the sales data to the JSON file after adding a new sale
     print("Sale added successfully!")
 
 
@@ -87,6 +106,7 @@ def remove_sale():
     for sale in sales:
         if sale['sale_id'] == sales_id:
             sales.remove(sale)
+            save_sales()  # Save the sales data to the JSON file after removing a sale
             print("Sale removed successfully!")
             return
     print("Sale not found.")
@@ -153,4 +173,5 @@ def main():
         else:
             print("Invalid input. Please enter a number between 1 and 6.")
 
+load_sales()
 main()
