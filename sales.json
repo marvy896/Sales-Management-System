@@ -25,5 +25,14 @@
         "price": 7.0,
         "total": 14.0,
         "date_time": "2026-08-19 11:37:56"
+    },
+    {
+        "sale_id": "5",
+        "customer": "RT",
+        "item": "GUG",
+        "quantity": 5,
+        "price": 7.0,
+        "total": 35.0,
+        "date_time": "2026-08-19 14:47:17"
     }
 ]

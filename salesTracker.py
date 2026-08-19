@@ -26,61 +26,62 @@ def load_sales():
         sales = []
     if sales:
         next_id = max(int(sale['sale_id']) for sale in sales) + 1
-        
+
+# Let's create helper functions that'll reduce the length of the add sales
+def get_valid_quantity():
+    while True:
+            try:
+                quantity = int(input("Enter the quantity sold: "))
+                if quantity <= 0:
+                    print("Quantity cannot be zero or negative. Please enter a valid number.")
+                    continue
+                return quantity
+            
+            except ValueError:
+                print("Invalid input for quantity. Please enter a valid number.")
+                continue
+
+def get_valid_price():
+    while True:
+            try:
+                price = float(input("Enter the price of the item: "))
+                if price <= 0:
+                    print("Price cannot be zero or negative. Please enter a valid number.")
+                    continue
+                return price
+            except ValueError:
+                print("Invalid input for price. Please enter a valid number.")
+                continue
+
+def get_valid_text(prompt):
+    while True:
+        text = input(prompt).strip()
+        if not text:
+            print("Input cannot be empty. Please enter a valid value.")
+            continue
+        return text
+    
 def add_sale():
     global next_id
+    
+    customer = get_valid_text("Enter your Name: ")
+    item = get_valid_text("Enter the item sold: ")
+    quantity = get_valid_quantity()
+    price = get_valid_price()
+    
     sales_data = {
-    'sale_id': '',
-    'customer': '',
-    'item': '',
-    'quantity': 0,
-    'price': 0.0,
-    'total': 0.0,
-    'date_time': ''
+    'sale_id': str(next_id),
+    'customer': customer,
+    'item': item,
+    'quantity': quantity,
+    'price': price,
+    'total': quantity * price,
+    'date_time': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 }
-    while True:
-        customer = input("Enter your Name: ").strip()
-        if not customer:
-            print("Please Enter your name")
-            continue
-        item = input("Enter the item sold: ").strip()
-        if not item:
-            print("Item name cannot be empty. Please enter a valid item name.")
-            continue
-        break
-
-    while True:
-        try:
-            quantity = int(input("Enter the quantity sold: "))
-            if quantity <= 0:
-                print("Quantity cannot be zero or negative. Please enter a valid number.")
-                continue
-            break
-        except ValueError:
-            print("Invalid input for quantity. Please enter a valid number.")
-            continue
-    while True:
-        try:
-            price = float(input("Enter the price of the item: "))
-            if price <= 0:
-                print("Price cannot be zero or negative. Please enter a valid number.")
-                continue
-            break
-        except ValueError:
-            print("Invalid input for price. Please enter a valid number.")
-            continue
-    sales_data['sale_id'] = str(next_id)
-    sales_data['customer'] = customer
-    sales_data['item'] = item
-    sales_data['quantity'] = quantity
-    sales_data['price'] = price
-    sales_data['total'] = quantity * price
-    sales_data['date_time'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     sales.append(sales_data)
     next_id += 1
     save_sales()  # Save the sales data to the JSON file after adding a new sale
     print("Sale added successfully!")
-
 
 def display_sale(sale):
     print(f"Sale ID: {sale['sale_id']}, Customer's Name: {sale['customer']}, Item Sold: {sale['item']}, Quantity Sold: {sale['quantity']}, Price: ₦{sale['price']:,.2f}, Total Sale Amount: ₦{sale['total']:,.2f}, Date and Time: {sale['date_time']}")
