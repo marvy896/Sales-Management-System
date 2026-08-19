@@ -149,15 +149,17 @@ def sales_report():
 def main():
     
     while True:
-        sales_report()
-        print("Please select an option:")
+        print("\nPlease select an option:")
         print("1. Add Sale")
         print("2. View Sales")
         print("3. Get Total Sales")
         print("4. Remove Sale")
         print("5. Search Sale")
-        print("6. Exit")
-        choice = input()
+        print("6. Sale Report")
+        print("7. Exit")
+        
+        choice = input("Enter your choice (1-7): ").strip()
+        
         if choice == '1':
             add_sale()
         elif choice == '2':
@@ -169,9 +171,11 @@ def main():
         elif choice == '5':
             search_sale()
         elif choice == '6':
+            sales_report()
+        elif choice == '7':
             break
         else:
-            print("Invalid input. Please enter a number between 1 and 6.")
+            print("Invalid input. Please enter a number between 1 and 7.")
 
 load_sales()
 main()
