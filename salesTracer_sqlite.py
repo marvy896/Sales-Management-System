@@ -16,10 +16,20 @@ datetime TEXT DEFAULT CURRENT_TIMESTAMP
 ''')
 
 connection.commit()
-cursor.execute("SELECT * FROM sales")
-rows = cursor.fetchall()
-print(rows)
-
+def display_sales():
+    cursor.execute("SELECT * FROM sales")
+    rows = cursor.fetchall()
+    if not rows:
+        print("No sales records found.")
+        return
+    print("=" * 80)
+    print(f"{'Sale ID':<10}{'Customer':<20}{'Item':<20}{'Quantity':<10}{'Price':<10}{'Total':<10}{'Date/Time':<20}")
+    print("=" * 80)
+    for row in rows:
+        sale_id, customer, item, quantity, price, total, date_time = row
+        print(f"{sale_id:<10}{customer:<20}{item:<20}{quantity:<10}{price:<10.2f}{total:<10.2f}{date_time:<20}")
+    print("=" * 80)
+    
 # cursor.execute('''
 #                INSERT INTO sales (customer, item, quantity, price, total, datetime) VALUES (?, ?, ?, ?, ?, ?)
 #                ''', ("John Doe", "Widget", 5, 10.0, 50.0, "2023-01-01 12:00:00"))
@@ -78,4 +88,25 @@ def add_sale():
     # next_id += 1
     # save_sales()  # Save the sales data to the JSON file after adding a new sale
     print("Sale added successfully!")
-add_sale()
+    
+def main():
+    while True:
+        print("=" * 40)
+        print("SALES MANAGEMENT SYSTEM".center(40))
+        print("1. Display Sales")
+        print("2. Add Sale")
+        print("3. Exit")
+        print("=" * 40)
+        choice = input("Enter your choice (1-3): ")
+        
+        if choice == "1":
+            display_sales()
+        elif choice == "2":
+            add_sale()
+        elif choice == "3":
+            print("Exiting the Sales Management System.")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+main()
