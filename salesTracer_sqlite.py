@@ -1,8 +1,6 @@
 import sqlite3
 connection = sqlite3.connect('sales.db')
 cursor = connection.cursor()
-from datetime import datetime
-next_id = 1
 
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS sales (sale_id INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -16,6 +14,7 @@ datetime TEXT DEFAULT CURRENT_TIMESTAMP
 ''')
 
 connection.commit()
+
 def display_sales():
     cursor.execute("SELECT * FROM sales")
     rows = cursor.fetchall()
@@ -73,16 +72,15 @@ def get_valid_text(prompt):
         return text
     
 def add_sale():
-    global next_id
-    
+  
     customer = get_valid_text("Enter your Name: ")
     item = get_valid_text("Enter the item sold: ")
     quantity = get_valid_quantity()
     price = get_valid_price()
     
     cursor.execute('''
-               INSERT INTO sales (customer, item, quantity, price, total, datetime) VALUES (?, ?, ?, ?, ?, ?)
-               ''', (customer, item, quantity, price, quantity * price, datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
+               INSERT INTO sales (customer, item, quantity, price, total, datetime) VALUES (?, ?, ?, ?, ?)
+               ''', (customer, item, quantity, price, quantity * price))
     connection.commit()
     # sales.append(sales_data)
     # next_id += 1
