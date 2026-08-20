@@ -88,22 +88,43 @@ def add_sale():
     # next_id += 1
     # save_sales()  # Save the sales data to the JSON file after adding a new sale
     print("Sale added successfully!")
-    
+
+# Next is to write the remove sale fuction
+   
+def remove_sale():
+    sales_id = input("Enter the ID of the sale you want to remove: ")
+
+    cursor.execute("SELECT * FROM sales WHERE sale_id = ?", (sales_id,))
+    row = cursor.fetchone()
+
+    if not row:
+        print("No records found.")
+        return
+
+    cursor.execute("DELETE FROM sales WHERE sale_id = ?", (sales_id,))
+    connection.commit()
+
+    print("Sale removed successfully.")        
+      
+          
 def main():
     while True:
         print("=" * 40)
         print("SALES MANAGEMENT SYSTEM".center(40))
         print("1. Display Sales")
         print("2. Add Sale")
-        print("3. Exit")
+        print("3. Delete Sale")
+        print("4. Exit")
         print("=" * 40)
-        choice = input("Enter your choice (1-3): ")
+        choice = input("Enter your choice (1-4): ")
         
         if choice == "1":
             display_sales()
         elif choice == "2":
             add_sale()
         elif choice == "3":
+            remove_sale()
+        elif choice == "4":
             print("Exiting the Sales Management System.")
             break
         else:
