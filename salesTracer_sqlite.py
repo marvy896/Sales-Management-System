@@ -29,12 +29,6 @@ def display_sales():
         print(f"{sale_id:<10}{customer:<20}{item:<20}{quantity:<10}{price:<10.2f}{total:<10.2f}{date_time:<20}")
     print("=" * 80)
     
-# cursor.execute('''
-#                INSERT INTO sales (customer, item, quantity, price, total, datetime) VALUES (?, ?, ?, ?, ?, ?)
-#                ''', ("John Doe", "Widget", 5, 10.0, 50.0, "2023-01-01 12:00:00"))
-# connection.commit()
-# print("Sale added successfully!")
-
 # now we have to get our addsale function to add sales to the database, 
 # we will ask the user to input the sales data and we will insert it into the database.
 
@@ -79,12 +73,9 @@ def add_sale():
     price = get_valid_price()
     
     cursor.execute('''
-               INSERT INTO sales (customer, item, quantity, price, total, datetime) VALUES (?, ?, ?, ?, ?)
+               INSERT INTO sales (customer, item, quantity, price, total) VALUES (?, ?, ?, ?, ?)
                ''', (customer, item, quantity, price, quantity * price))
     connection.commit()
-    # sales.append(sales_data)
-    # next_id += 1
-    # save_sales()  # Save the sales data to the JSON file after adding a new sale
     print("Sale added successfully!")
 
 # Next is to write the remove sale fuction
@@ -103,6 +94,24 @@ def remove_sale():
     connection.commit()
 
     print("Sale removed successfully.")        
+
+# lets add the search Fuction
+def search_sale():
+    search = input("Enter the Name of the customer you want to search: ")
+    cursor.execute("SELECT * FROM sales WHERE LOWER(customer) = LOWER(?)", (search,))
+    row = cursor.fetchall()
+    
+    if not row:
+        print("No Customer found")
+        return
+    for row in row:
+           sale_id, customer, item, quantity, price, total, date_time = row
+           print(f"{sale_id:<10}{customer:<20}{item:<20}{quantity:<10}{price:<10.2f}{total:<10.2f}{date_time:<20}")
+           print("=" * 80)
+        
+     
+
+  
       
           
 def main():
@@ -112,9 +121,10 @@ def main():
         print("1. Display Sales")
         print("2. Add Sale")
         print("3. Delete Sale")
-        print("4. Exit")
+        print("4. Search sale")
+        print("5. Exit")
         print("=" * 40)
-        choice = input("Enter your choice (1-4): ")
+        choice = input("Enter your choice (1-5): ")
         
         if choice == "1":
             display_sales()
@@ -123,6 +133,8 @@ def main():
         elif choice == "3":
             remove_sale()
         elif choice == "4":
+            search_sale()
+        elif choice == "5":
             print("Exiting the Sales Management System.")
             break
         else:
