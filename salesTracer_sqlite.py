@@ -160,7 +160,6 @@ def edit_sale():
         print("No Sale found")
         return
     print("\nCurrent sale details:")
-    print("\nCurrent sale details:")
     print("=" * 80)
     print(f"Sale ID: {results[0]}")
     print(f"Customer: {results[1]}")
@@ -175,8 +174,8 @@ def edit_sale():
        
     new_customer = get_optional_text("Enter the new customer's name: ")
     new_item = get_optional_text("Enter the new item sold: ")
-    new_quantity = get_optional_quantity("Enter the new quantity sold (leave blank to keep current): ")
-    new_price = get_optional_price("Enter the new price (leave blank to keep current): ")
+    new_quantity = get_optional_quantity("Enter the new quantity sold: ")
+    new_price = get_optional_price("Enter the new price: ")
 
     customer = results[1] if new_customer is None else new_customer
     item = results[2] if new_item is None else new_item
@@ -199,7 +198,44 @@ def edit_sale():
     connection.commit()
     print("Sale edited successfully!")             
            
-        
+    
+def sales_report():
+    cursor.execute("""
+        SELECT 
+            COUNT(*),
+            SUM(quantity),
+            SUM(total),
+            AVG(total),
+            MAX(total),
+            MIN(total)
+        FROM sales
+    """)
+
+    result = cursor.fetchone()
+
+    total_transactions = result[0]
+    total_items = result[1]
+    total_revenue = result[2]
+    average_sale = result[3]
+    highest_sale = result[4]
+    lowest_sale = result[5]
+
+    if total_transactions == 0:
+        print("No sales records found.")
+        return
+
+    print("=" * 50)
+    print("SALES REPORT".center(50))
+    print("=" * 50)
+
+    print(f"Total Transactions : {total_transactions}")
+    print(f"Total Items Sold   : {total_items}")
+    print(f"Total Revenue      : ₦{total_revenue:,.2f}")
+    print(f"Average Sale       : ₦{average_sale:,.2f}")
+    print(f"Highest Sale       : ₦{highest_sale:,.2f}")
+    print(f"Lowest Sale        : ₦{lowest_sale:,.2f}")
+
+    print("=" * 50)
           
 def main():
     while True:
@@ -210,9 +246,10 @@ def main():
         print("3. Delete Sale")
         print("4. Search sale")
         print("5. Edit Sale")
-        print("6 Exit")
+        print("6. Sales Report")
+        print("7. Exit")
         print("=" * 40)
-        choice = input("Enter your choice (1-6): ")
+        choice = input("Enter your choice (1-7): ")
         
         if choice == "1":
             display_sales()
@@ -225,6 +262,8 @@ def main():
         elif choice == "5":
             edit_sale()
         elif choice == "6":
+            sales_report()
+        elif choice == "7":
             print("Exiting the Sales Management System.")
             break
         else:
