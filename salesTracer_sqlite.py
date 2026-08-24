@@ -99,20 +99,107 @@ def remove_sale():
 def search_sale():
     search = input("Enter the Name of the customer you want to search: ")
     cursor.execute("SELECT * FROM sales WHERE LOWER(customer) = LOWER(?)", (search,))
-    row = cursor.fetchall()
+    results = cursor.fetchall()
     
-    if not row:
+    if not results:
         print("No Customer found")
         return
-    for row in row:
+    for row in results:
            sale_id, customer, item, quantity, price, total, date_time = row
            print(f"{sale_id:<10}{customer:<20}{item:<20}{quantity:<10}{price:<10.2f}{total:<10.2f}{date_time:<20}")
            print("=" * 80)
         
-     
 
-  
-      
+# Lets createhe edit function with validations
+def get_optional_quantity(prompt):
+    while True:
+        quantity = input(prompt).strip()
+        if quantity == "":
+            return None
+        try:
+            quantity = int(quantity)
+            if quantity <= 0:
+                print("Quantity cannot be zero or negative. Please enter a valid number.")
+                continue
+            return quantity
+        except ValueError:
+            print("Invalid input for quantity. Please enter a valid number.")
+            continue
+        
+def get_optional_price(prompt):
+    while True:
+        price = input(prompt).strip()
+        if price == "":
+            return None
+        try:
+            price = float(price)
+            if price <= 0:
+                print("Price cannot be zero or negative. Please enter a valid number.")
+                continue
+            return price
+        except ValueError:
+            print("Invalid input for price. Please enter a valid number.")
+            continue
+        
+def get_optional_text(prompt):
+    while True:
+        text = input(prompt).strip()
+        if text == "":
+            return None
+        return text
+    
+def edit_sale():
+    sale_id = input("Enter the ID of the customer you want to edit: ")
+    cursor.execute(
+            "SELECT * FROM sales WHERE sale_id = ?",
+            (sale_id,)
+        )
+    results = cursor.fetchone()
+    
+    if not results:
+        print("No Sale found")
+        return
+    print("\nCurrent sale details:")
+    print("\nCurrent sale details:")
+    print("=" * 80)
+    print(f"Sale ID: {results[0]}")
+    print(f"Customer: {results[1]}")
+    print(f"Item: {results[2]}")
+    print(f"Quantity: {results[3]}")
+    print(f"Price: ₦{results[4]:,.2f}")
+    print(f"Total: ₦{results[5]:,.2f}")
+    print("=" * 80)
+
+    print("\nEnter the new details for the sale.")
+    print("Leave blank to keep the current value.\n")
+       
+    new_customer = get_optional_text("Enter the new customer's name: ")
+    new_item = get_optional_text("Enter the new item sold: ")
+    new_quantity = get_optional_quantity("Enter the new quantity sold (leave blank to keep current): ")
+    new_price = get_optional_price("Enter the new price (leave blank to keep current): ")
+
+    customer = results[1] if new_customer is None else new_customer
+    item = results[2] if new_item is None else new_item
+    quantity = results[3] if new_quantity is None else new_quantity
+    price = results[4] if new_price is None else new_price
+   
+
+    # Recalculate total
+    total = quantity * price
+    
+    cursor.execute("""
+    UPDATE sales
+    SET customer = ?,
+        item = ?,
+        quantity = ?,
+        price = ?,
+        total = ?
+    WHERE sale_id = ?
+""", (customer, item, quantity, price, total, sale_id))
+    connection.commit()
+    print("Sale edited successfully!")             
+           
+        
           
 def main():
     while True:
@@ -122,9 +209,10 @@ def main():
         print("2. Add Sale")
         print("3. Delete Sale")
         print("4. Search sale")
-        print("5. Exit")
+        print("5. Edit Sale")
+        print("6 Exit")
         print("=" * 40)
-        choice = input("Enter your choice (1-5): ")
+        choice = input("Enter your choice (1-6): ")
         
         if choice == "1":
             display_sales()
@@ -135,6 +223,8 @@ def main():
         elif choice == "4":
             search_sale()
         elif choice == "5":
+            edit_sale()
+        elif choice == "6":
             print("Exiting the Sales Management System.")
             break
         else:
