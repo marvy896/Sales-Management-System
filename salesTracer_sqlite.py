@@ -236,7 +236,41 @@ def sales_report():
     print(f"Lowest Sale        : ₦{lowest_sale:,.2f}")
 
     print("=" * 50)
-          
+
+def Customer_Report():
+    customer = input("Put the customers Name: ").strip()
+    cursor.execute(
+        """SELECT COUNT(*), SUM(quantity), SUM(total), AVG(total),
+                  MAX(total), MIN(total)
+           FROM sales WHERE LOWER(customer) = LOWER(?)""",
+        (customer,)
+    )
+    
+    results = cursor.fetchone()
+   
+    if not results:
+        print("No User found")
+        return
+    
+    total_transactions = cursor.execute("SELECT COUNT(*) FROM sales WHERE customer = ?", (customer,))
+    total_items = cursor.execute("SELECT SUM(quantity)) FROM sales WHERE customer = ?", (customer,))
+    total_revenue = cursor.execute("SELECT SUM(total)) FROM sales  WHERE customer = ?", (customer,))
+    average_sale = cursor.execute("SELECT AVG(total)) FROM sales  WHERE customer = ?", (customer,))
+    highest_sale = cursor.execute("SELECT MAX(total) FROM sales  WHERE customer = ?", (customer,))
+    lowest_sale = cursor.execute("SELECT MAX(total) FROM sales  WHERE customer = ?", (customer,))
+    
+        
+    print("=" * 50)
+    print("SALES REPORT".center(50))        
+    print("=" * 50)
+    print(f"Total Transactions : {total_transactions}")
+    print(f"Total Items Sold   : {total_items}")
+    print(f"Total Revenue      : ₦{total_revenue:,.2f}")
+    print(f"Average Sale       : ₦{average_sale:,.2f}")
+    print(f"Highest Sale       : ₦{highest_sale:,.2f}")
+    print(f"Lowest Sale        : ₦{lowest_sale:,.2f}")
+    print("=" * 50)
+            
 def main():
     while True:
         print("=" * 40)
@@ -247,9 +281,10 @@ def main():
         print("4. Search sale")
         print("5. Edit Sale")
         print("6. Sales Report")
-        print("7. Exit")
+        print("7. Customer Report")
+        print("8. Exit")
         print("=" * 40)
-        choice = input("Enter your choice (1-7): ")
+        choice = input("Enter your choice (1-8): ")
         
         if choice == "1":
             display_sales()
@@ -264,6 +299,8 @@ def main():
         elif choice == "6":
             sales_report()
         elif choice == "7":
+            Customer_Report()
+        elif choice == "8":
             print("Exiting the Sales Management System.")
             break
         else:
