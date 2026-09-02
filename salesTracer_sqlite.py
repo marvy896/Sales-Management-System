@@ -3,7 +3,19 @@ connection = sqlite3.connect('sales.db')
 cursor = connection.cursor()
 from datetime import datetime
 today = datetime.now().strftime("%Y-%m-%d")
+import shutil
+import os
 
+def backup_database():
+    if not os.path.exists('sales.db'):
+        print("No database file found to backup.")
+        return
+    os.makedirs('backup', exist_ok=True)
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H%M%S")
+    backup_file = f'backup/sales_backup_{timestamp}.db'
+    shutil.copy2('sales.db', backup_file)
+    print(f"Database backup created: {backup_file}")
+    
 
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS sales (sale_id INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -346,4 +358,5 @@ def main():
         else:
             print("Invalid choice. Please try again.")
 
+backup_database()
 main()
