@@ -1,6 +1,9 @@
 import sqlite3
 connection = sqlite3.connect('sales.db')
 cursor = connection.cursor()
+from datetime import datetime
+today = datetime.now().strftime("%Y-%m-%d")
+
 
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS sales (sale_id INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -237,6 +240,40 @@ def sales_report():
 
     print("=" * 50)
 
+def daily_sales_report():
+    # getDate = input("Enter the date for the daily sales report (YYYY-MM-DD): ")
+    cursor.execute(""" SELECT
+                   COUNT(*),
+                     SUM(quantity),
+                     SUM(total),
+                     AVG(total),
+                     MAX(total),
+                     MIN(total)
+                     FROM sales
+                     WHERE DATE(datetime) = ?""", (today,))
+    daily_sales = cursor.fetchone()
+    if not daily_sales or daily_sales[0] == 0:
+        print("No sales records found for the specified date.")
+        return
+    total_transactions = daily_sales[0]
+    total_items = daily_sales[1]
+    total_revenue = daily_sales[2]
+    average_sale = daily_sales[3]
+    highest_sale = daily_sales[4]
+    lowest_sale = daily_sales[5]
+    
+    print("=" * 50)
+    print(f"SALES REPORT FOR {today}".center(50))        
+    print("=" * 50)
+    print(f"Total Transactions : {total_transactions}")
+    print(f"Total Items Sold   : {total_items}")
+    print(f"Total Revenue      : ₦{total_revenue:,.2f}")
+    print(f"Average Sale       : ₦{average_sale:,.2f}")
+    print(f"Highest Sale       : ₦{highest_sale:,.2f}")
+    print(f"Lowest Sale        : ₦{lowest_sale:,.2f}")
+    print("=" * 50)
+                
+
 def Customer_Report():
     customer = input("Put the customers Name: ").strip()
     cursor.execute(
@@ -257,11 +294,11 @@ def Customer_Report():
     total_revenue = cursor.execute("SELECT SUM(total)) FROM sales  WHERE customer = ?", (customer,))
     average_sale = cursor.execute("SELECT AVG(total)) FROM sales  WHERE customer = ?", (customer,))
     highest_sale = cursor.execute("SELECT MAX(total) FROM sales  WHERE customer = ?", (customer,))
-    lowest_sale = cursor.execute("SELECT MAX(total) FROM sales  WHERE customer = ?", (customer,))
+    lowest_sale = cursor.execute("SELECT MIN(total) FROM sales  WHERE customer = ?", (customer,))
     
         
     print("=" * 50)
-    print("SALES REPORT".center(50))        
+    print(f"SALES REPORT FOR {customer}".center(50))        
     print("=" * 50)
     print(f"Total Transactions : {total_transactions}")
     print(f"Total Items Sold   : {total_items}")
@@ -282,9 +319,10 @@ def main():
         print("5. Edit Sale")
         print("6. Sales Report")
         print("7. Customer Report")
-        print("8. Exit")
+        print("8. Daily Sales Report")
+        print("9. Exit")
         print("=" * 40)
-        choice = input("Enter your choice (1-8): ")
+        choice = input("Enter your choice (1-9): ")
         
         if choice == "1":
             display_sales()
@@ -301,6 +339,8 @@ def main():
         elif choice == "7":
             Customer_Report()
         elif choice == "8":
+            daily_sales_report()
+        elif choice == "9":
             print("Exiting the Sales Management System.")
             break
         else:
