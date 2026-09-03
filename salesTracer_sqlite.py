@@ -376,5 +376,5 @@ def main():
         else:
             print("Invalid choice. Please try again.")
 
-backup_database()
+run_automation()
 main()
