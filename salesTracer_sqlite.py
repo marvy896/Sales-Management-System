@@ -16,7 +16,25 @@ def backup_database():
     shutil.copy2('sales.db', backup_file)
     print(f"Database backup created: {backup_file}")
     
+def cleanup_backups():
+    backup_dir = 'backup'
+    if not os.path.exists(backup_dir):
+        return
+    backups = sorted(
+        file for file in os.listdir(backup_dir) 
+        if file.startswith('sales_backup_') and file.endswith('.db')
+        )
+    
+    while len(backups) > 5:
+        oldest_backup = backups.pop(0)
+        os.remove(os.path.join(backup_dir, oldest_backup))
+        print(f"Deleted old backup: {oldest_backup}")
 
+def run_automation():
+    backup_database()
+    cleanup_backups()
+    
+    
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS sales (sale_id INTEGER PRIMARY KEY AUTOINCREMENT, 
 customer TEXT, 
