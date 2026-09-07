@@ -303,7 +303,50 @@ def daily_sales_report():
     print(f"Lowest Sale        : ₦{lowest_sale:,.2f}")
     print("=" * 50)
                 
+def generate_daily_report():
+    today = datetime.now().strftime("%Y-%m-%d")
 
+    cursor.execute("""
+        SELECT
+            COUNT(*),
+            COALESCE(SUM(quantity), 0),
+            COALESCE(SUM(total), 0),
+            COALESCE(AVG(total), 0),
+            COALESCE(MAX(total), 0),
+            COALESCE(MIN(total), 0)
+        FROM sales
+        WHERE DATE(datetime) = ?
+    """, (today,))
+
+    report = cursor.fetchone()
+
+    total_transactions = report[0] or 0
+    total_items = report[1] or 0
+    total_revenue = report[2] or 0
+    average_sale = report[3] or 0
+    highest_sale = report[4] or 0
+    lowest_sale = report[5] or 0
+
+    os.makedirs("reports", exist_ok=True)
+
+    report_file = f"reports/sales_report_{today}.txt"
+
+    with open(report_file, "w", encoding="utf-8") as file:
+        file.write("=" * 50 + "\n")
+        file.write(f"SALES REPORT FOR {today}".center(50) + "\n")
+        file.write("=" * 50 + "\n")
+
+        file.write(f"Total Transactions : {total_transactions}\n")
+        file.write(f"Total Items Sold   : {total_items}\n")
+        file.write(f"Total Revenue      : ₦{total_revenue:,.2f}\n")
+        file.write(f"Average Sale       : ₦{average_sale:,.2f}\n")
+        file.write(f"Highest Sale       : ₦{highest_sale:,.2f}\n")
+        file.write(f"Lowest Sale        : ₦{lowest_sale:,.2f}\n")
+
+        file.write("=" * 50 + "\n")
+
+    print(f"Daily report generated: {report_file}")
+    
 def Customer_Report():
     customer = input("Put the customers Name: ").strip()
     cursor.execute(
@@ -377,4 +420,5 @@ def main():
             print("Invalid choice. Please try again.")
 
 run_automation()
+generate_daily_report()
 main()
